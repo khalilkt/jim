@@ -86,15 +86,20 @@ class _HomePageState extends State<HomePage> {
   Widget _buildTitle() {
     return Row(
       mainAxisSize: MainAxisSize.max,
-      children: const [
-        Text(
+      children: [
+        const Text(
           'My Workout List',
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
         ),
-        Spacer(),
-        Text(
-          '+',
-          style: TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
+        const Spacer(),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, Pages.createWorkout);
+          },
+          child: const Text(
+            '+',
+            style: TextStyle(fontSize: 34, fontWeight: FontWeight.w600),
+          ),
         ),
       ],
     );

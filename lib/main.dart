@@ -32,8 +32,11 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           fontFamily: 'Inter',
           backgroundColor: backColor,
-          textTheme:
-              const TextTheme(bodyText2: TextStyle(color: Colors.white))),
+          textSelectionTheme:
+              const TextSelectionThemeData(cursorColor: secondaryColor),
+          textTheme: const TextTheme(
+            bodyText2: TextStyle(color: Colors.white),
+          )),
       onGenerateRoute: router.onGenerateRoute,
     );
   }
