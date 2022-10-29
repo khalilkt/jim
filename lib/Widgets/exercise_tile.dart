@@ -141,6 +141,9 @@ class _ExerciseTileState extends State<ExerciseTile>
   @override
   void didUpdateWidget(covariant ExerciseTile oldWidget) {
     if (widget.expanded) {
+      if (_animController.isDismissed) {
+        reset();
+      }
       _animController.forward();
     } else {
       _animController.reverse();
@@ -310,23 +313,26 @@ class _ExerciseTileState extends State<ExerciseTile>
             buildCol(widget.exo!.sets.toString(), 'Sets'),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
         LayoutBuilder(builder: (context, cc) {
+          if (widget.inSet == null) {
+            return const SizedBox();
+          }
           double w =
               (cc.maxWidth / widget.exo!.sets) - 6 /*(widget.exo!.sets * 2)*/;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(widget.exo!.sets, (index) {
-              return MColorAnimatedContainer(
-                width: w,
-                height: 6,
-                color: index == widget.inSet
-                    ? Colors.white
-                    : index < (widget.inSet ?? -1)
-                        ? secondaryColor
-                        : const Color(0xff989898),
+              return Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: MColorAnimatedContainer(
+                  width: w,
+                  height: 6,
+                  color: index == widget.inSet
+                      ? Colors.white
+                      : index < (widget.inSet ?? -1)
+                          ? secondaryColor
+                          : const Color(0xff989898),
+                ),
               );
             }),
           );
@@ -392,7 +398,6 @@ class _ExerciseTileState extends State<ExerciseTile>
                         child: animation.value == 1
                             ? GestureDetector(
                                 onTap: () {
-                                  reset();
                                   widget.onAddTap!(null);
                                 },
                                 child: child,
@@ -416,7 +421,10 @@ class _ExerciseTileState extends State<ExerciseTile>
             end: AnimatedBuilder(
                 animation: animation,
                 builder: (c, w) {
-                  return Opacity(opacity: 1.0 - animation.value, child: w);
+                  return Opacity(
+                      opacity: 1.0 - animation.value,
+                      child:
+                          Align(widthFactor: 1.0 - animation.value, child: w));
                 },
                 child: widget.exo == null ? const SizedBox() : _buildStat()),
           ),
